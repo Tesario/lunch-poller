@@ -1,0 +1,7 @@
+# Supabase
+supabase/.branches
+supabase/.temp
+supabase/schema.sql
+# Misc
+.idea
+supabase/.env.local
