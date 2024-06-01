@@ -1,5 +1,4 @@
 import { LUNCH_TEST_CHANNEL_ID, slackBotClient } from "../_shared/slack.ts";
-import { VOTE_VIEW } from "../_shared/views.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -18,9 +17,7 @@ Deno.serve(async (req) => {
     await slackBotClient.chat.postMessage({
       channel: LUNCH_TEST_CHANNEL_ID,
       trigger_id: triggerId,
-      blocks: [
-        ...VOTE_VIEW.blocks,
-      ],
+      blocks: [],
     });
 
     return new Response(null, {
