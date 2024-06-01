@@ -1,4 +1,5 @@
-import { LUNCH_CHANNEL_ID, slackBotClient } from "../_shared/slack.ts";
+import { LUNCH_TEST_CHANNEL_ID, slackBotClient } from "../_shared/slack.ts";
+import { VOTE_VIEW } from "../_shared/views.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -15,16 +16,10 @@ Deno.serve(async (req) => {
 
     // Send a successful match report
     await slackBotClient.chat.postMessage({
-      channel: LUNCH_CHANNEL_ID,
+      channel: LUNCH_TEST_CHANNEL_ID,
       trigger_id: triggerId,
       blocks: [
-        {
-          type: "section",
-          text: {
-            type: "plain_text",
-            text: "Yo mama so fat, that your algorithms crash trying to find just one restaurant for her!",
-          },
-        },
+        ...VOTE_VIEW.blocks,
       ],
     });
 
@@ -41,7 +36,7 @@ Deno.serve(async (req) => {
       }),
       {
         status: 500,
-      }
+      },
     );
   }
 });

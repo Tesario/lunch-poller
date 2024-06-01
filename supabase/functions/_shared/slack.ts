@@ -1,6 +1,7 @@
 import { WebClient } from "https://deno.land/x/slack_web_api@6.7.2/mod.js";
 
 export const LUNCH_CHANNEL_ID = "C25JXQX7H";
+export const LUNCH_TEST_CHANNEL_ID = "C0762J1AWJF";
 
 const SLACK_BOT_TOKEN = Deno.env.get("SLACK_BOT_TOKEN") ?? "";
 
