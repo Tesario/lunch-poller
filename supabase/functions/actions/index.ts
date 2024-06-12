@@ -8,13 +8,11 @@ Deno.serve(async (req) => {
     const params = new URLSearchParams(data);
 
     let payload: any = params.get("payload");
-
     if (!payload) {
       return new Response(null, {
         status: 400,
       });
     }
-
     payload = JSON.parse(payload);
 
     if (!payload) {
@@ -23,15 +21,17 @@ Deno.serve(async (req) => {
       });
     }
 
+    if (payload.type === "view_submission") {
+      return new Response(null, {
+        status: 200,
+      });
+    }
     if (payload.type !== "block_actions") {
       return new Response(null, {
         status: 200,
       });
     }
-
     if (payload.actions[0].value === "add_suggestion") {
-      console.log("add_suggestion");
-
       const supabase = createClient(
         Deno.env.get("SP_URL") ?? "",
         Deno.env.get("SP_ANON_KEY") ?? "",
@@ -84,13 +84,15 @@ Deno.serve(async (req) => {
           element: any,
         ) => element.type === "image");
 
-      const isUserPresent = !!newBlocks[votesBlockId].elements.find((element) =>
-        element.alt_text === user.profile.real_name
-      );
+      const isUserPresent = !!newBlocks[votesBlockId].elements.find((
+        element: any,
+      ) => element.alt_text === user.profile.real_name);
 
       if (isUserPresent) {
         newBlocks[votesBlockId].elements = newBlocks[votesBlockId].elements
-          .filter((element) => element.alt_text !== user.profile.real_name);
+          .filter((element: any) =>
+            element.alt_text !== user.profile.real_name
+          );
       } else {
         newBlocks[votesBlockId].elements.push({
           type: "image",
@@ -121,8 +123,6 @@ Deno.serve(async (req) => {
       });
     }
   } catch (error) {
-    console.log(error);
-
     return new Response(
       JSON.stringify({
         message: "Something went wrong.",

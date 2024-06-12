@@ -1,4 +1,4 @@
-import { LUNCH_TEST_CHANNEL_ID, slackBotClient } from "../_shared/slack.ts";
+import { LUNCH_CHANNEL_ID, slackBotClient } from "../_shared/slack.ts";
 import { getPollViewMessage } from "../_shared/views.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -27,22 +27,29 @@ Deno.serve(async (req) => {
 
     const today = new Date();
     const endAt = today.setMinutes(today.getMinutes() + 2);
-    const {data: pollData} = await supabase.from('Poll').insert({ end_at: new Date(endAt) }).select("id, created_at, end_at");
+    const { data: pollData } = await supabase.from("Poll").insert({
+      end_at: new Date(endAt),
+    }).select("id, created_at, end_at");
 
-    const {data:restaurantData} = await supabase
+    const { data: restaurantData } = await supabase
       .from("Restaurant")
       .select("id, name, url");
 
-    const shuffledRestaurants = restaurantData.sort(() => 0.5 - Math.random());
-    const randomRestaurants = shuffledRestaurants.slice(0, 3);
+    const shuffledRestaurants = restaurantData?.sort(() => 0.5 - Math.random());
+    const randomRestaurants = shuffledRestaurants?.slice(0, 3);
 
-    const {data: voteData} = await supabase.from("Vote").insert(randomRestaurants.map((restaurant)=>({restaurant_id: restaurant.id, poll_id: pollData[0].id})))
+    const { data: voteData } = await supabase.from("Vote").insert(
+      randomRestaurants?.map((restaurant) => ({
+        restaurant_id: restaurant.id,
+        poll_id: pollData?.[0].id,
+      })),
+    );
 
     // Send a successful match report
     await slackBotClient.chat.postMessage({
-      channel: LUNCH_TEST_CHANNEL_ID,
+      channel: LUNCH_CHANNEL_ID,
       trigger_id: triggerId,
-      blocks:  getPollViewMessage(randomRestaurants),
+      blocks: getPollViewMessage(randomRestaurants),
       unfurl_media: false,
       unfurl_links: false,
     });
