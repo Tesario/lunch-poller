@@ -179,3 +179,9 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 
 [functions.lunch]
 verify_jwt = false
+
+[functions.actions]
+verify_jwt = false
+
+[functions.close-poll]
+verify_jwt = false
