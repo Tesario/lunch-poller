@@ -182,6 +182,3 @@ verify_jwt = false
 
 [functions.actions]
 verify_jwt = false
-
-[functions.close-poll]
-verify_jwt = false

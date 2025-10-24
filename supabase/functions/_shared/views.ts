@@ -32,7 +32,7 @@ export const getModalView = (restaurants: any) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "Pick an restaurant from the list",
+          text: "Pick a restaurant from the list",
         },
         accessory: {
           type: "static_select",
@@ -85,9 +85,10 @@ export const getPollViewMessage = (randomRestaurants: any) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `${randomRestaurants[1].name} | <${
-        randomRestaurants[1].url
-      }|Menu :link:>`,
+      text:
+      randomRestaurants[1].url.startsWith("http") ?
+        `${randomRestaurants[1].name} | <${randomRestaurants[1].url}|Menu :link:>` :
+        `${randomRestaurants[1].name} | ${randomRestaurants[1].url}`,
     },
     accessory: {
       type: "button",
